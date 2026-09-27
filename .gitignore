@@ -5,5 +5,8 @@ build/
 *.log
 server/prisma/dev.db
 server/prisma/dev.db-journal
+server/tests/*.db
+server/tests/*.db-journal
 coverage/
 .DS_Store
+*.tsbuildinfo
