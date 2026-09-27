@@ -15,38 +15,26 @@ model User {
   createdAt    DateTime @default(now())
 }
 
-enum EmploymentStatus {
-  ACTIVE
-  TERMINATED
-}
-
-enum Gender {
-  FEMALE
-  MALE
-  OTHER
-}
-
-enum SalaryChangeReason {
-  HIRE
-  PROMOTION
-  MERIT_INCREASE
-  MARKET_ADJUSTMENT
-  DEMOTION
-}
+// SQLite has no native enum type, so these are enforced as String columns
+// with the allowed values validated at the application layer (zod schemas).
+// Allowed values:
+//  EmploymentStatus: ACTIVE, TERMINATED
+//  Gender: FEMALE, MALE, OTHER
+//  SalaryChangeReason: HIRE, PROMOTION, MERIT_INCREASE, MARKET_ADJUSTMENT, DEMOTION
 
 model Employee {
-  id               String           @id @default(cuid())
-  employeeCode     String           @unique
+  id               String     @id @default(cuid())
+  employeeCode     String     @unique
   firstName        String
   lastName         String
-  email            String           @unique
-  gender           Gender
+  email            String     @unique
+  gender           String
   country          String
   department       String
   jobTitle         String
   level            String
   currency         String
-  employmentStatus EmploymentStatus @default(ACTIVE)
+  employmentStatus String     @default("ACTIVE")
   hireDate         DateTime
   terminationDate  DateTime?
 
@@ -73,8 +61,8 @@ model SalaryRecord {
   amount        Float
   currency      String
   effectiveDate DateTime
-  reason        SalaryChangeReason
-  createdAt     DateTime           @default(now())
+  reason        String
+  createdAt     DateTime @default(now())
 
   @@index([employeeId, effectiveDate])
 }
